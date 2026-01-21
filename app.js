@@ -30,7 +30,6 @@ function parseCSV(file) {
   });
 }
 
-
 function parseExcel(file) {
   const reader = new FileReader();
 
@@ -82,47 +81,6 @@ function setupControls(data) {
   });
 }
 
-
-function generateVisualizations(data) {
-  currentData = data;
-  vizCount = 0;
-
-  const container = document.getElementById("visualizations");
-  container.innerHTML = "";
-
-  const columnSelect = document.getElementById("columnSelect");
-  columnSelect.innerHTML = "";
-
-  const numericColumns = Object.keys(data[0]).filter(col => {
-    let numericCount = 0;
-    let totalCount = 0;
-
-    data.forEach(row => {
-      if (row[col] !== null && row[col] !== "") {
-        totalCount++;
-        if (!isNaN(Number(row[col]))) numericCount++;
-      }
-    });
-
-    return totalCount > 0 && numericCount / totalCount > 0.7;
-  });
-
-  if (numericColumns.length === 0) {
-    alert("Aucune colonne numérique détectée");
-    return;
-  }
-
-  numericColumns.forEach(col => {
-    const option = document.createElement("option");
-    option.value = col;
-    option.textContent = col;
-    columnSelect.appendChild(option);
-  });
-
-  document.getElementById("controls").style.display = "flex";
-}
-
-
 function createChart(data, column, type) {
   vizCount++;
 
@@ -155,12 +113,9 @@ function createChart(data, column, type) {
     };
   }
 
-document.getElementById("visualizations").scrollIntoView({ behavior: "smooth" });
+  document.getElementById("visualizations").scrollIntoView({ behavior: "smooth" });
 
-
-  Plotly.newPlot(chartId, [trace], {
-    title: `${column}`
-  });
+  Plotly.newPlot(chartId, [trace], { title: `${column}` });
 }
 
 function exportPNG(chartId) {
@@ -222,27 +177,32 @@ document.getElementById("generateBtn").addEventListener("click", () => {
   createChart(currentData, column, type);
 });
 
-
-
+// ====== CHATBOT IA ======
 document.getElementById("chatBtn").addEventListener("click", async () => {
   const message = document.getElementById("chatInput").value;
   if (!message || currentData.length === 0) return;
 
   const columns = Object.keys(currentData[0]);
+  let result;
 
-  const response = await fetch("/.netlify/functions/chatbot", {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({
-      message,
-      columns
-    })
-  });
+  try {
+    const response = await fetch("/.netlify/functions/chatbot", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ message, columns })
+    });
+    result = await response.json();
+  } catch (err) {
+    document.getElementById("chatResponse").textContent = "IA : Impossible de lire la réponse";
+    return;
+  }
 
-  const result = await response.json();
+  if (!result || !result.column || !result.type) {
+    document.getElementById("chatResponse").textContent = "IA : Réponse IA invalide";
+    return;
+  }
 
-  document.getElementById("chatResponse").textContent =
-    `IA : ${result.explanation}`;
+  document.getElementById("chatResponse").textContent = `IA : ${result.explanation}`;
 
   createChart(currentData, result.column, result.type);
 });
