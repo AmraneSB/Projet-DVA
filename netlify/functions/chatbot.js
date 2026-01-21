@@ -2,7 +2,6 @@ import fetch from "node-fetch";
 
 export async function handler(event) {
   try {
-    // GET pour test rapide
     if (event.httpMethod === "GET") {
       return {
         statusCode: 200,
@@ -10,23 +9,14 @@ export async function handler(event) {
       };
     }
 
-    // POST
     let payload = {};
     if (event.body) {
-      try {
-        payload = JSON.parse(event.body);
-      } catch {
-        return {
-          statusCode: 400,
-          body: JSON.stringify({ ok: false, error: "Invalid JSON body" })
-        };
-      }
+      payload = JSON.parse(event.body);
     }
 
     const { message, columns } = payload;
     const key = process.env.OPENAI_API_KEY;
 
-    // Si pas de clé, renvoyer un graphique par défaut
     if (!key) {
       return {
         statusCode: 200,
@@ -38,9 +28,8 @@ export async function handler(event) {
       };
     }
 
-    // Prompt pour OpenAI
     const prompt = `
-Tu es un assistant pour créer des graphiques à partir de données CSV/Excel.
+Tu es un assistant qui crée des graphiques à partir de données.
 Colonnes disponibles : ${columns.join(", ")}
 Utilisateur demande : "${message}"
 
@@ -67,7 +56,6 @@ Réponds STRICTEMENT en JSON :
     const data = await response.json();
     const content = data.choices[0].message.content;
 
-    // Retour JSON vers frontend
     return {
       statusCode: 200,
       body: content
