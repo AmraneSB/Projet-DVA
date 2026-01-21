@@ -1,42 +1,54 @@
-import fetch from "node-fetch";
-
 export async function handler(event) {
-  const { message, columns } = JSON.parse(event.body);
+  try {
+    // GET pour test
+    if (event.httpMethod === "GET") {
+      return {
+        statusCode: 200,
+        body: JSON.stringify({ ok: true, message: "Function alive 🚀" })
+      };
+    }
 
-  const prompt = `
-Tu es un assistant de visualisation de données.
+    // POST
+    let payload = {};
+    if (event.body) {
+      try {
+        payload = JSON.parse(event.body);
+      } catch (err) {
+        return {
+          statusCode: 400,
+          body: JSON.stringify({ ok: false, error: "Invalid JSON body" })
+        };
+      }
+    }
 
-Colonnes disponibles :
-${columns.join(", ")}
+    // Si la clé OpenAI n'existe pas, on renvoie un message générique
+    const key = process.env.OPENAI_API_KEY;
+    if (!key) {
+      return {
+        statusCode: 200,
+        body: JSON.stringify({
+          column: "population", // valeur par défaut pour test
+          type: "bar",
+          explanation: "Clé OpenAI manquante, voici un exemple de graphique par défaut"
+        })
+      };
+    }
 
-Demande utilisateur :
-"${message}"
+    // Ici, tu mettrais ton vrai code OpenAI
+    // Pour l'instant, renvoie une réponse factice sûre
+    return {
+      statusCode: 200,
+      body: JSON.stringify({
+        column: "population",
+        type: "bar",
+        explanation: "Exemple de graphique généré par le chatbot"
+      })
+    };
 
-Réponds STRICTEMENT en JSON :
-{
-  "column": "...",
-  "type": "bar | pie | line",
-  "explanation": "..."
-}
-`;
-
-  const response = await fetch("https://api.openai.com/v1/chat/completions", {
-    method: "POST",
-    headers: {
-      "Authorization": `Bearer ${process.env.OPENAI_API_KEY}`,
-      "Content-Type": "application/json"
-    },
-    body: JSON.stringify({
-      model: "gpt-4.1-mini",
-      messages: [{ role: "user", content: prompt }]
-    })
-  });
-
-  const data = await response.json();
-  const content = data.choices[0].message.content;
-
-  return {
-    statusCode: 200,
-    body: content
-  };
+  } catch (err) {
+    return {
+      statusCode: 500,
+      body: JSON.stringify({ ok: false, error: err.message })
+    };
+  }
 }
