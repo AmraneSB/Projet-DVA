@@ -237,6 +237,20 @@ document.getElementById("chatBtn").addEventListener("click", async () => {
       message,
       columns
     })
+const result = await response.json();
+
+if (!result || !result.column || !result.type) {
+  document.getElementById("chatResponse").textContent =
+    "IA : Impossible de générer le graphique.";
+  return;
+}
+
+document.getElementById("chatResponse").textContent =
+  `IA : ${result.explanation}`;
+
+createChart(currentData, result.column, result.type);
+
+    
   });
 
   const result = await response.json();
@@ -246,3 +260,4 @@ document.getElementById("chatBtn").addEventListener("click", async () => {
 
   createChart(currentData, result.column, result.type);
 });
+
