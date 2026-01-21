@@ -1,57 +1,48 @@
 <!DOCTYPE html>
 <html lang="fr">
 <head>
-  <meta charset="UTF-8" />
-  <title>Data Visualisation App</title>
-  <link rel="stylesheet" href="style.css" />
+<meta charset="UTF-8">
+<title>Visualisation de données</title>
+<link rel="stylesheet" href="style.css">
+<script src="lib/papaparse.min.js"></script>
+<script src="lib/plotly.min.js"></script>
+<script src="lib/jspdf.umd.min.js"></script>
+<script src="lib/xlsx.full.min.js"></script>
+<script src="app.js"></script>
 </head>
 <body>
 
-<h1> Visualisation de données</h1>
+<h1>📊 Visualisation de données</h1>
 
 <input type="file" id="fileInput" accept=".csv,.xlsx,.xls" />
 
-<div id="controls" style="display:none; margin-top:20px;">
-  <label>
-    Colonne :
+<div id="controls" style="display:none;">
+  <label>Colonne :
     <select id="columnSelect"></select>
   </label>
-
-  <label style="margin-left:20px;">
-    Type de graphique :
+  <label style="margin-left:20px;">Type de graphique :
     <select id="chartType">
       <option value="bar">Barres</option>
       <option value="line">Courbe</option>
       <option value="pie">Camembert</option>
     </select>
   </label>
-
-  <button id="generateBtn" style="margin-left:20px;">
-    Générer
-  </button>
+  <button id="generateBtn">Générer</button>
 </div>
 
-<hr style="margin:30px 0;">
+<hr>
 
 <div id="visualizations"></div>
 
-<hr style="margin:40px 0;">
+<hr>
 
 <h2>🤖 Assistant IA</h2>
+<div id="chatSection">
+  <textarea id="chatInput" rows="3" style="width:100%;"></textarea><br>
+  <button id="chatBtn">Envoyer</button>
+  <p id="chatResponse" style="margin-top:20px;font-style:italic;"></p>
+</div>
 
-<textarea id="chatInput" rows="3" style="width:100%;"></textarea>
-<br><br>
-<button id="chatBtn">Envoyer</button>
-
-<p id="chatResponse" style="margin-top:20px;font-style:italic;"></p>
-
-
-
-<script src="lib/papaparse.min.js"></script>
-<script src="lib/plotly.min.js"></script>
-<script src="lib/jspdf.umd.min.js"></script>
-<script src="lib/xlsx.full.min.js"></script>
 <script src="app.js"></script>
-
 </body>
 </html>
