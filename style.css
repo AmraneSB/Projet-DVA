@@ -1,52 +1,87 @@
+/* ===== Base ===== */
 body {
-  font-family: Arial, sans-serif;
-  margin: 40px;
-  background: #f7f7f7;
+  background-color: #f8faff;
 }
 
+/* ===== Titres ===== */
 h1 {
-  margin-bottom: 20px;
+  color: #0d6efd;
 }
 
+h3 {
+  color: #0b5ed7;
+  margin-bottom: 15px;
+}
+
+/* ===== Cards Bootstrap ===== */
+.card {
+  border: none;
+  border-left: 5px solid #0d6efd;
+}
+
+.card-title {
+  color: #0b5ed7;
+  font-weight: 600;
+}
+
+/* ===== Controls ===== */
+.form-label {
+  font-weight: 500;
+  color: #084298;
+}
+
+.form-select,
+.form-control {
+  border-radius: 8px;
+  border: 1px solid #cfe2ff;
+}
+
+.form-select:focus,
+.form-control:focus {
+  border-color: #0d6efd;
+  box-shadow: 0 0 0 0.15rem rgba(13, 110, 253, 0.25);
+}
+
+/* ===== Boutons ===== */
+.btn-primary {
+  background-color: #0d6efd;
+  border: none;
+}
+
+.btn-primary:hover {
+  background-color: #0b5ed7;
+}
+
+button {
+  border-radius: 8px;
+}
+
+/* ===== Visualisations ===== */
 #visualizations > div {
   background: white;
   padding: 20px;
   margin-bottom: 30px;
-  border-radius: 8px;
-  box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+  border-radius: 12px;
+  box-shadow: 0 6px 20px rgba(13,110,253,0.08);
+  border-left: 6px solid #0d6efd;
 }
 
-button {
-  margin-right: 10px;
-  margin-top: 10px;
-  padding: 6px 12px;
-  cursor: pointer;
-}
-
-#controls {
-  background: white;
-  padding: 15px;
-  border-radius: 8px;
-  margin: 20px 0;
-  display: flex;
-  gap: 15px;
-  align-items: center;
-}
-
-select, button {
-  padding: 6px 10px;
-}
-
-#visualizations > div {
-  background: white;
-  padding: 20px;
-  margin-bottom: 30px;
-  border-radius: 10px;
-  box-shadow: 0 4px 10px rgba(0,0,0,0.05);
-}
-
-button {
+/* ===== Export buttons ===== */
+#visualizations button {
   margin-right: 8px;
   margin-top: 10px;
 }
 
+#visualizations button:hover {
+  opacity: 0.9;
+}
+
+/* ===== Upload ===== */
+input[type="file"] {
+  cursor: pointer;
+}
+
+/* ===== Smooth UX ===== */
+html {
+  scroll-behavior: smooth;
+}
