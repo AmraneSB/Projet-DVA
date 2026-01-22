@@ -36,3 +36,17 @@ button {
 select, button {
   padding: 6px 10px;
 }
+
+#visualizations > div {
+  background: white;
+  padding: 20px;
+  margin-bottom: 30px;
+  border-radius: 10px;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+}
+
+button {
+  margin-right: 8px;
+  margin-top: 10px;
+}
+
